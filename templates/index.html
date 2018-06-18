@@ -1,0 +1,76 @@
+<html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+
+html, body, .container {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.scope {
+    background: #f1f1f1;
+    margin: 3px;
+    padding: 0 2px 0 3px;
+    max-width: 390px;
+    border-radius: 5px;
+}
+
+.scope-title {
+    font-style: italic;
+}
+
+.action {
+    display: table-row;
+}
+.action-spoken {
+    font-weight: bold;
+    padding-right: 5px;
+    display: table-cell;
+}
+.action-letter > .action-desc, .action-symbol > .action-desc {
+    text-align: right;
+    font-weight: bold;
+}
+.action-desc {
+    line-height: 1.2em;
+    display: table-cell;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: -1px;
+    vertical-align: middle;
+}
+.action:last-child > .action-desc {
+    border: none;
+}
+</style>
+</head><body>
+<div class="container">
+<div class="scope">
+    <div class="scope-title">alphabet</div>
+    {% for spoken, letter in alpha %}
+    <div class="action action-letter">
+        <div class="action-spoken">{{ spoken }}</div>
+        <div class="action-desc">{{ letter|upper }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% for name, ctx in contexts.items() %}
+    <div class="scope">
+        <div class="scope-title">{{ name }} ({{ ctx.commands|length }}) {% if not ctx.active %}(inactive){% endif %}</div>
+        {% for trigger, action in ctx.commands %}
+            <div class="action">
+                <div class="action-spoken">{{ trigger }}</div>
+                <div class="action-desc">{{ action }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+</div>
+</body>
+</html>
