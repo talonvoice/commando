@@ -50,7 +50,7 @@ try:
     from user import std
     alnum = std.alnum
 except Exception:
-    alnum = []
+    alnum = {}
 
 response = {'contexts': {}}
 response['alnum'] = alnum
