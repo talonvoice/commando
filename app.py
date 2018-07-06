@@ -3,6 +3,7 @@ from collections import OrderedDict, defaultdict
 import json
 import os
 import socket
+import string
 import sys
 
 py3 = sys.version_info[0] >= 3
@@ -48,9 +49,9 @@ FETCH_SCRIPT = r'''from collections import defaultdict
 import json
 try:
     from user import std
-    alnum = std.alnum
+    alnum = std.alpha_alt
 except Exception:
-    alnum = {}
+    alnum = []
 
 response = {'contexts': {}}
 response['alnum'] = alnum
@@ -124,9 +125,7 @@ def slash():
     for name, ctx in grammar['contexts'].items():
         ctx['commands'] = [fixup(trigger, cmd)
                            for trigger, cmd in ctx['commands']]
-    alpha = sorted([pair for pair
-                    in grammar['alnum'].items()
-                    if pair[0].isalpha()], key=lambda a: a[1])
+    alpha = zip(grammar['alnum'], string.lowercase)
     return render_template('index.html', contexts=grammar['contexts'], alpha=alpha)
 
 if __name__ == '__main__':
